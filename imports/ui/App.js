@@ -76,23 +76,21 @@ const CheckedItemsCounter = props => (
 
 
 class App extends Component {
-    render() {
-        return (
-            <div className='container'>
-                <header>
-                    <h1>Todo List</h1>
-                    <VisibilitySelector checked={this.state.hideChecked}
-                                        handleToggleVisibility={
-                                            this.handleToggleVisibility.bind(this)
-                                        }/>
-                    <TaskInput value={this.state.inputText}/>
-                </header>
-                <TaskList tasks={this.props.tasks}
-                          hideChecked={this.state.hideChecked}/>
-                <CheckedItemsCounter counter={this.props.checkedCounter}/>
-            </div>
-        );
-    }
+    render = () => (
+        <div className='container'>
+            <header>
+                <h1>Todo List</h1>
+                <VisibilitySelector checked={this.state.hideChecked}
+                                    handleToggleVisibility={
+                                        this.handleToggleVisibility.bind(this)
+                                    }/>
+                <TaskInput value={this.state.inputText}/>
+            </header>
+            <TaskList tasks={this.props.tasks}
+                      hideChecked={this.state.hideChecked}/>
+            <CheckedItemsCounter counter={this.props.checkedCounter}/>
+        </div>
+    );
 
     constructor(props) {
         super(props);
