@@ -24,15 +24,17 @@ const TaskList = props => (
 
 class TaskInput extends Component {
     render = () => (
-        <div> {
-            <form className="new-task"
-                  onSubmit={this.onFormSubmit.bind(this)}>
-                <input type="text"
-                       value={this.state.inputText}
-                       placeholder="Type to add new tasks"
-                       onChange={this.onFormChange.bind(this)} />
-            </form>
-        } </div>
+        this.props.currentUser
+        ? <div> {
+              <form className="new-task"
+                    onSubmit={this.onFormSubmit.bind(this)}>
+                  <input type="text"
+                         value={this.state.inputText}
+                         placeholder="Type to add new tasks"
+                         onChange={this.onFormChange.bind(this)} />
+              </form>
+          } </div>
+        : ""
     )
 
     constructor(props) {
@@ -88,7 +90,8 @@ class App extends Component {
                                         this.handleToggleVisibility.bind(this)
                                     } />
                 <AccountsUIWrapper />
-                <TaskInput value={this.state.inputText} />
+                <TaskInput value={this.state.inputText}
+                           currentUser={this.props.currentUser}/>
             </header>
             <TaskList tasks={this.props.tasks}
                       hideChecked={this.state.hideChecked} />
@@ -112,5 +115,6 @@ export default withTracker(() => {
     return {
         tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch(),
         checkedCounter: Tasks.find({checked: {$eq: true}}).count(),
+        currentUser: Meteor.user(),
     };
 })(App);
