@@ -20,6 +20,42 @@ const TaskList = props => (
 );
 
 
+class TaskInput extends Component {
+    render = () => (
+        <div> {
+            <form className="new-task"
+                  onSubmit={this.onFormSubmit.bind(this)}>
+                <input type="text"
+                       value={this.state.inputText}
+                       placeholder="Type to add new tasks"
+                       onChange={this.onFormChange.bind(this)}/>
+            </form>
+        } </div>
+    )
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputText: "",
+        }
+    }
+
+    onFormChange(event) {
+        this.setState({inputText: event.target.value});
+    }
+
+    onFormSubmit(event) {
+        event.preventDefault();
+        var inputText = this.state.inputText;
+        Tasks.insert({
+            text: inputText,
+            createdAt: new Date(),
+        });
+        this.setState({inputText: ""});
+    }
+}
+
+
 const VisibilitySelector = props => (
     <label className="hide-completed">
         <input type="checkbox"
@@ -49,13 +85,7 @@ class App extends Component {
                                         handleToggleVisibility={
                                             this.handleToggleVisibility.bind(this)
                                         }/>
-                    <form className="new-task"
-                          onSubmit={this.onFormSubmit.bind(this)}>
-                        <input type="text"
-                               value={this.state.inputText}
-                               placeholder="Type to add new tasks"
-                               onChange={this.onFormChange.bind(this)}/>
-                    </form>
+                    <TaskInput value={this.state.inputText}/>
                 </header>
                 <TaskList tasks={this.props.tasks}
                           hideChecked={this.state.hideChecked}/>
@@ -67,23 +97,8 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            inputText: "",
             hideChecked: false,
         };
-    }
-
-    onFormSubmit(event) {
-        event.preventDefault();
-        var inputText = this.state.inputText;
-        Tasks.insert({
-            text: inputText,
-            createdAt: new Date(),
-        });
-        this.setState({inputText: ""});
-    }
-
-    onFormChange(event) {
-        this.setState({inputText: event.target.value});
     }
 
     handleToggleVisibility() {
