@@ -1,5 +1,6 @@
 
 import React, { Component } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
@@ -51,6 +52,8 @@ class TaskInput extends Component {
         Tasks.insert({
             text: inputText,
             createdAt: new Date(),
+            owner: Meteor.userId(),
+            username: Meteor.user().username,
         });
         this.setState({inputText: ""});
     }
