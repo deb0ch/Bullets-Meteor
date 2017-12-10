@@ -6,6 +6,20 @@ import Task from './Task.js';
 import { Tasks } from '../api/tasks.js';
 
 
+const TaskList = props => (
+    <ul> {
+        (() => {
+            let filteredList = props.tasks.filter(item => (
+                !props.hideChecked || !item.checked
+            ));
+            return filteredList.map((task) => (
+                    <Task key={task._id} task={task}/>
+            ));
+        })()
+    } </ul>
+);
+
+
 const VisibilitySelector = props => (
     <label className="hide-completed">
         <input type="checkbox"
@@ -43,16 +57,8 @@ class App extends Component {
                                onChange={this.onFormChange.bind(this)}/>
                     </form>
                 </header>
-                <ul> {
-                    (() => {
-                        let filteredList = this.props.tasks.filter(item => (
-                            !this.state.hideChecked || !item.checked
-                        ));
-                        return filteredList.map((task) => (
-                            <Task key={task._id} task={task}/>
-                        ));
-                    })()
-                } </ul>
+                <TaskList tasks={this.props.tasks}
+                          hideChecked={this.state.hideChecked}/>
                 <CheckedItemsCounter counter={this.props.checkedCounter}/>
             </div>
         );
