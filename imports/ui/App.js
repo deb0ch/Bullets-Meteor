@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 
+import AccountsUIWrapper from './AccountsUIWrapper.js';
 import Task from './Task.js';
 import { Tasks } from '../api/tasks.js';
 
@@ -83,6 +84,7 @@ class App extends Component {
                                     handleToggleVisibility={
                                         this.handleToggleVisibility.bind(this)
                                     } />
+                <AccountsUIWrapper />
                 <TaskInput value={this.state.inputText} />
             </header>
             <TaskList tasks={this.props.tasks}
