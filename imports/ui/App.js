@@ -13,7 +13,7 @@ const TaskList = props => (
                 !props.hideChecked || !item.checked
             ));
             return filteredList.map((task) => (
-                    <Task key={task._id} task={task}/>
+                    <Task key={task._id} task={task} />
             ));
         })()
     } </ul>
@@ -28,7 +28,7 @@ class TaskInput extends Component {
                 <input type="text"
                        value={this.state.inputText}
                        placeholder="Type to add new tasks"
-                       onChange={this.onFormChange.bind(this)}/>
+                       onChange={this.onFormChange.bind(this)} />
             </form>
         } </div>
     )
@@ -61,8 +61,7 @@ const VisibilitySelector = props => (
         <input type="checkbox"
                readOnly
                checked={props.hideChecked}
-               onChange={props.handleToggleVisibility}
-        />
+               onChange={props.handleToggleVisibility} />
         Hide checked
     </label>
 );
@@ -83,12 +82,12 @@ class App extends Component {
                 <VisibilitySelector checked={this.state.hideChecked}
                                     handleToggleVisibility={
                                         this.handleToggleVisibility.bind(this)
-                                    }/>
-                <TaskInput value={this.state.inputText}/>
+                                    } />
+                <TaskInput value={this.state.inputText} />
             </header>
             <TaskList tasks={this.props.tasks}
-                      hideChecked={this.state.hideChecked}/>
-            <CheckedItemsCounter counter={this.props.checkedCounter}/>
+                      hideChecked={this.state.hideChecked} />
+            <CheckedItemsCounter counter={this.props.checkedCounter} />
         </div>
     );
 
