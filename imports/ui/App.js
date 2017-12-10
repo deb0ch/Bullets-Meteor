@@ -18,6 +18,13 @@ const VisibilitySelector = props => (
 );
 
 
+const CheckedItemsCounter = props => (
+    <div className="counter">
+        Completed: {props.counter}
+    </div>
+);
+
+
 class App extends Component {
     render() {
         return (
@@ -46,6 +53,7 @@ class App extends Component {
                         ));
                     })()
                 } </ul>
+                <CheckedItemsCounter counter={this.props.checkedCounter}/>
             </div>
         );
     }
@@ -80,5 +88,6 @@ class App extends Component {
 export default withTracker(() => {
     return {
         tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch(),
+        checkedCounter: Tasks.find({checked: {$eq: true}}).count(),
     };
 })(App);
