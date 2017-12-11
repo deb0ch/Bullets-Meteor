@@ -14,9 +14,16 @@ const TaskList = props => (
             let filteredList = props.tasks.filter(item => (
                 !props.hideChecked || !item.checked
             ));
-            return filteredList.map((task) => (
-                    <Task key={task._id} task={task} />
-            ));
+            return filteredList.map((task) => {
+                const currentUserId = (props.currentUser
+                                       && props.currentUser._id);
+                const showPrivateButton = (task.owner === currentUserId);
+                return (
+                    <Task key={task._id}
+                          task={task}
+                          showPrivateButton={showPrivateButton} />
+                );
+            });
         })()
     } </ul>
 );
@@ -88,7 +95,8 @@ class App extends Component {
                            currentUser={this.props.currentUser}/>
             </header>
             <TaskList tasks={this.props.tasks}
-                      hideChecked={this.state.hideChecked} />
+                      hideChecked={this.state.hideChecked}
+                      currentUser={this.props.currentUser}/>
             <CheckedItemsCounter counter={this.props.checkedCounter} />
         </div>
     );

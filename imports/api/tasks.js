@@ -44,4 +44,14 @@ Meteor.methods({
         checkLoggedIn(this);
         Tasks.update(taskId, {$set: {checked: setChecked}});
     },
+
+    'tasks.setPrivate'(taskId, setToPrivate) {
+        check(taskId, String);
+        check(setToPrivate, Boolean);
+        const task = Tasks.findOne(taskId);
+        if (task.owner !== this.userId) {
+            throw new Meteor.Error('user does not own the task');
+        }
+        Tasks.update(taskId, {$set: {private: setToPrivate}});
+    },
 });
