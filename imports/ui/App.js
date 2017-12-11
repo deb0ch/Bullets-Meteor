@@ -50,13 +50,7 @@ class TaskInput extends Component {
 
     onFormSubmit(event) {
         event.preventDefault();
-        var inputText = this.state.inputText;
-        Tasks.insert({
-            text: inputText,
-            createdAt: new Date(),
-            owner: Meteor.userId(),
-            username: Meteor.user().username,
-        });
+        Meteor.call('tasks.insert', this.state.inputText.trim());
         this.setState({inputText: ""});
     }
 }

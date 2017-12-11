@@ -1,4 +1,40 @@
 
-import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
+import { Mongo }  from 'meteor/mongo';
+import { check }  from 'meteor/check';
 
 export const Tasks = new Mongo.Collection('tasks');
+
+
+const checkLoggedIn = (meteor) => {
+    if (!meteor.userId) {
+        throw new Meteor.Error('not logged in');
+    }
+};
+
+
+Meteor.methods({
+    'tasks.insert'(text) {
+        check(text, String);
+        checkLoggedIn(this);
+        Tasks.insert({
+            text,
+            createdAt: new Date(),
+            owner: this.userId,
+            username: Meteor.users.findOne(this.userId).username,
+        });
+    },
+
+    'tasks.remove'(taskId) {
+        check(taskId, String);
+        checkLoggedIn(this);
+        Tasks.remove(taskId);
+    },
+
+    'tasks.setChecked'(taskId, setChecked) {
+        check(taskId, String);
+        check(setChecked, Boolean);
+        checkLoggedIn(this);
+        Tasks.update(taskId, {$set: {checked: setChecked}});
+    },
+});
