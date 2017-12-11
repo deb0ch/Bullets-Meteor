@@ -1,13 +1,18 @@
 
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 import { Tasks } from '../api/tasks.js'
 
 // Task component - represents a single item
 export default class Task extends Component {
     render() {
+        const taskClassName = classnames({
+            checked: this.props.task.checked,
+            private: this.props.task.private,
+        });
         return (
-            <li className={this.props.task.checked ? "checked" : ""}>
+            <li className={taskClassName}>
                 <button className="delete"
                         onClick={this.remove.bind(this)}>
                 &times;
