@@ -106,6 +106,7 @@ class App extends Component {
 }
 
 export default withTracker(() => {
+    Meteor.subscribe('tasks');
     return {
         tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch(),
         checkedCounter: Tasks.find({checked: {$eq: true}}).count(),
