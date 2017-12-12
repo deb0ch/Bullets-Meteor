@@ -40,6 +40,10 @@ Meteor.methods({
     'tasks.remove'(taskId) {
         check(taskId, String);
         checkLoggedIn(this);
+        const task = Tasks.findOne(taskId);
+        if (task.private && task.owner !== this.userId) {
+            throw new Meteor.Error('must own private task to remove it');
+        }
         Tasks.remove(taskId);
     },
 
@@ -47,6 +51,10 @@ Meteor.methods({
         check(taskId, String);
         check(setChecked, Boolean);
         checkLoggedIn(this);
+        const task = Tasks.findOne(taskId);
+        if (task.private && task.owner !== this.userId) {
+            throw new Meteor.Error('must own private task to check / uncheck it');
+        }
         Tasks.update(taskId, {$set: {checked: setChecked}});
     },
 
