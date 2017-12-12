@@ -15,7 +15,12 @@ const checkLoggedIn = (meteor) => {
 
 if (Meteor.isServer) {
     Meteor.publish('tasks', function tasksPublication() {
-        return Tasks.find();
+        return Tasks.find({
+            $or: [
+                {private: {$ne: true}},
+                {owner: this.userId},
+            ],
+        });
     });
 }
 
