@@ -109,7 +109,13 @@ class App extends Component {
     }
 
     handleToggleVisibility() {
-        this.setState({hideChecked: !this.state.hideChecked})
+        // Must use a special form of setState(), taking a function as argument,
+        // to compute the next state based on the previous state.
+        // This is needed because of the asynchronous nature of setState().
+        // https://reactjs.org/docs/state-and-lifecycle.html#state-updates-may-be-asynchronous
+        this.setState((prevState, props) => (
+            {hideChecked: !prevState.hideChecked}
+        ))
     }
 }
 
