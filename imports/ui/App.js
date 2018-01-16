@@ -1,17 +1,17 @@
 
 import React, { Component } from 'react';
-import { Meteor } from 'meteor/meteor';
-import { withTracker } from 'meteor/react-meteor-data';
+import { Meteor }           from 'meteor/meteor';
+import { withTracker }      from 'meteor/react-meteor-data';
 
 import AccountsUIWrapper from './AccountsUIWrapper.js';
-import Task from './Task.js';
-import { Tasks } from '../api/tasks.js';
+import Task              from './Task.js';
+import { Tasks }         from '../api/tasks.js';
 
 
-const TaskList = props => (
+const TaskList = (props) => (
     <ul> {
         (() => {
-            let filteredList = props.tasks.filter(item => (
+            let filteredList = props.tasks.filter((item) => (
                 !props.hideChecked || !item.checked
             ));
             return filteredList.map((task) => {
@@ -63,7 +63,7 @@ class TaskInput extends Component {
 }
 
 
-const VisibilitySelector = props => (
+const VisibilitySelector = (props) => (
     <label className="hide-completed">
         <input type="checkbox"
                readOnly
@@ -74,7 +74,7 @@ const VisibilitySelector = props => (
 );
 
 
-const CheckedItemsCounter = props => (
+const CheckedItemsCounter = (props) => (
     <div className="counter">
         Completed: {props.counter}
     </div>
@@ -92,11 +92,11 @@ class App extends Component {
                                     } />
                 <AccountsUIWrapper />
                 <TaskInput value={this.state.inputText}
-                           currentUser={this.props.currentUser}/>
+                           currentUser={this.props.currentUser} />
             </header>
             <TaskList tasks={this.props.tasks}
                       hideChecked={this.state.hideChecked}
-                      currentUser={this.props.currentUser}/>
+                      currentUser={this.props.currentUser} />
             <CheckedItemsCounter counter={this.props.checkedCounter} />
         </div>
     );
