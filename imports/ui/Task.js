@@ -4,6 +4,7 @@ import classnames           from 'classnames';
 
 import { Tasks } from '../api/tasks.js'
 
+
 // Task component - represents a single item
 export default class Task extends Component {
     render() {

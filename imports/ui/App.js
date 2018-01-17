@@ -1,11 +1,14 @@
 
-import React, { Component } from 'react';
-import { Meteor }           from 'meteor/meteor';
-import { withTracker }      from 'meteor/react-meteor-data';
+import React                        from 'react';
+import { Component, PureComponent } from 'react';
+import { connect }                  from 'react-redux';
+import { Meteor }                   from 'meteor/meteor';
+import { withTracker }              from 'meteor/react-meteor-data';
 
-import AccountsUIWrapper from './AccountsUIWrapper.js';
-import Task              from './Task.js';
-import { Tasks }         from '../api/tasks.js';
+import AccountsUIWrapper       from './AccountsUIWrapper.js';
+import Task                    from './Task.js';
+import { Tasks }               from '../api/tasks.js';
+import { SubscribedComponent } from '../SubscribedComponent';
 
 
 const TaskList = (props) => (
@@ -17,7 +20,7 @@ const TaskList = (props) => (
             return filteredList.map((task) => {
                 const currentUserId = (props.currentUser
                                        && props.currentUser._id);
-                const showPrivateButton = (task.owner === currentUserId);
+                const showPrivateButton = (task.owner === Meteor.user()._id);
                 return (
                     <Task key={task._id}
                           task={task}
@@ -31,7 +34,7 @@ const TaskList = (props) => (
 
 class TaskInput extends Component {
     render = () => (
-        this.props.currentUser
+        Meteor.user()
         ? <div> {
               <form className="new-task"
                     onSubmit={this.onFormSubmit.bind(this)}>
@@ -108,6 +111,10 @@ class App extends Component {
         };
     }
 
+    componentWillMount() {
+        this.props.subscribe('tasks');
+    }
+
     handleToggleVisibility() {
         // Must use a special form of setState(), taking a function as argument,
         // to compute the next state based on the previous state.
@@ -119,11 +126,10 @@ class App extends Component {
     }
 }
 
-export default withTracker(() => {
-    Meteor.subscribe('tasks');
+const mapStateToProps = (state) => {
     return {
-        tasks: Tasks.find({}, {sort: {createdAt: -1}}).fetch(),
-        checkedCounter: Tasks.find({checked: {$eq: true}}).count(),
-        currentUser: Meteor.user(),
+        tasks: state.tasks,
     };
-})(App);
+};
+
+export default connect(mapStateToProps)(SubscribedComponent(App));
